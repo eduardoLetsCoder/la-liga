@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>La Liga</title>
+  </head>
+  <body>
+    <nav>
+      <a href="./index.html">Inicio</a>
+      <a href="./matches.html">Partidos</a>
+      <a href="./ranking.html">Clasificación</a>
+      <a href="./teams.html">Equipos</a>
+    </nav>
+    <button onclick="getTeams('all')">Ver todos</button>
+    <button onclick="getTeams('topFiveInGoals')">Equipos más goleadores</button>
+    <button onclick="getTeams('topFiveDefenders')">
+      Equipos con menos goles en contra
+    </button>
+    <button onclick="getAverages('goals')">
+      Equipos con más goles por partido
+    </button>
+    <button onclick="getAverages('defense')">
+      Equipos con memos goles en contra por partido
+    </button>
+    <div class="table-container">
+      <table id="teams-table">
+        <caption id="teams-table-caption"></caption>
+        <thead id="teams-thead"></thead>
+        <tbody id="teams-tbody"></tbody>
+      </table>
+    </div>
+    <script src="./scripts/teams.js"></script>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>La Liga</title>
+  </head>
+  <body>
+    <nav>
+      <a href="./index.html">Inicio</a>
+      <a href="./matches.html">Partidos</a>
+      <a href="./ranking.html">Clasificación</a>
+      <a href="./teams.html">Equipos</a>
+    </nav>
+    <button onclick="getMatches('all')">Todos los partidos</button>
+    <label for="name">Equipo:</label>
+    <input type="text" id="teamName" />
+    <label>
+      <input type="radio" name="matchesSelection" value="all" id="radio-all" />
+      Todos
+    </label>
+    <label>
+      <input type="radio" name="matchesSelection" value="won" id="radio-won" />
+      Ganados
+    </label>
+    <label>
+      <input
+        type="radio"
+        name="matchesSelection"
+        value="lost"
+        id="radio-lost"
+      />
+      Perdidos
+    </label>
+    <label>
+      <input
+        type="radio"
+        name="matchesSelection"
+        value="draw"
+        id="radio-draw"
+      />
+      Empatados
+    </label>
+    <label>
+      <input
+        type="radio"
+        name="matchesSelection"
+        value="next"
+        id="radio-next"
+      />
+      Próximos
+    </label>
+    <button onclick="getMatches('some')">Buscar</button>
+    <div class="table-container">
+      <table>
+        <caption id="matches-table-caption"></caption>
+        <thead id="matches-thead"></thead>
+        <tbody id="matches-tbody"></tbody>
+      </table>
+    </div>
+    <div id="query-error"></div>
+    <script src="./scripts/matches.js"></script>   
+  </body>
+</html>
