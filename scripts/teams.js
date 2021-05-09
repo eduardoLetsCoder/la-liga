@@ -106,8 +106,6 @@ function getAverages(goalsOrDefense) {
         .then((response) => response.json())
         .then((data) => {
           let matches = data.matches;
-          console.log(teams);
-          console.log(matches);
           let statistics = [];
           for (let i = 0; i < teams.length; i++) {
             let teamStats = new Object();
@@ -115,8 +113,9 @@ function getAverages(goalsOrDefense) {
             statistics.push(teamStats);
           }
           if (goalsOrDefense == "goals") {
-            tableCaption.innerText = "Equipos con mayor media de goles por partido";
-            let orderedStatistics = [];
+            tableCaption.innerText =
+              "Equipos con mayor media de goles por partido";
+            let sortedStatistics = [];
             thead.innerHTML = "<th>Nombre</th><th>Media de goles marcados</th>";
             for (let i = 0; i < teams.length; i++) {
               let name = teams[i].team.name;
@@ -130,17 +129,51 @@ function getAverages(goalsOrDefense) {
                 }
               }
             }
-            orderedStatistics = statistics.sort((a, b) => {
+            sortedStatistics = statistics.sort((a, b) => {
               return b.goalsAverage - a.goalsAverage;
             });
             for (let i = 0; i < 5; i++) {
               let tr = document.createElement("tr");
-              tr.innerHTML = `<tr><td>${orderedStatistics[i].name}</td><td>${orderedStatistics[i].goalsAverage}</td></tr>`;
+              tr.innerHTML = `<tr><td>${sortedStatistics[i].name}</td><td>${sortedStatistics[i].goalsAverage}</td></tr>`;
               tbody.appendChild(tr);
             }
           } else if (goalsOrDefense == "defense") {
+            tableCaption.innerText =
+              "Equipos com menos goles encajados como visitante";
             thead.innerHTML =
               "<th>Nombre</th><th>Media de goles encajados</th>";
+            let sortedStatistics;
+            for (let i = 0; i < statistics.length; i++) {
+              let name = statistics[i].name;
+              let totalGoalsAgainst = 0;
+              let totalMatches = 0;
+              for (let j = 0; j < matches.length; j++) {
+                if (
+                  matches[j].awayTeam.name == name &&
+                  matches[j].status == "FINISHED"
+                ) {
+                  let goalsAgainst =
+                    matches[j].score.halfTime.homeTeam +
+                    matches[j].score.fullTime.homeTeam;
+                  totalGoalsAgainst += goalsAgainst;
+                  totalMatches++;
+                }
+              }
+              let average = totalGoalsAgainst / totalMatches;
+              for (let j = 0; j < statistics.length; j++) {
+                if (statistics[j].name == name) {
+                  statistics[j].awayGoalsAgainstAverge = round(average);
+                }
+              }
+            }
+            sortedStatistics = statistics.sort((a, b) => {
+              return a.awayGoalsAgainstAverge - b.awayGoalsAgainstAverge;
+            })
+            for (let i = 0; i < 5; i++) {
+              let tr = document.createElement("tr");
+              tr.innerHTML = `<tr><td>${sortedStatistics[i].name}</td><td>${sortedStatistics[i].awayGoalsAgainstAverge}</td></tr>`;
+              tbody.appendChild(tr);
+            }
           }
         });
     });
@@ -149,15 +182,11 @@ function getAverages(goalsOrDefense) {
 function round(num, decimales = 2) {
   var signo = num >= 0 ? 1 : -1;
   num = num * signo;
-  if (decimales === 0)
-    //con 0 decimales
-    return signo * Math.round(num);
-  // round(x * 10 ^ decimales)
+  if (decimales === 0) return signo * Math.round(num);
   num = num.toString().split("e");
   num = Math.round(
     +(num[0] + "e" + (num[1] ? +num[1] + decimales : decimales))
   );
-  // x * 10 ^ (-decimales)
   num = num.toString().split("e");
   return signo * (num[0] + "e" + (num[1] ? +num[1] - decimales : -decimales));
 }
