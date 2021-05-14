@@ -11,3 +11,11 @@
 .padding-right-left {
   padding: 0 20rem;
 }
+
+.error-container {
+  margin-top: 5rem;
+  display: flex;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: red;
+}
