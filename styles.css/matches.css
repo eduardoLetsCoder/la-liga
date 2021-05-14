@@ -1,0 +1,13 @@
+.top-container {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.margin-left-1 {
+  margin-left: 1rem;
+}
+
+.padding-right-left {
+  padding: 0 20rem;
+}

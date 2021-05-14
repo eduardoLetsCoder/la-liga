@@ -11,8 +11,7 @@ let queryError = document.getElementById("query-error");
 function getMatches(allOrSome) {
   queryError.innerText = "";
   tbody.innerHTML = "";
-  thead.innerHTML =
-    "<th>Fecha</th><th>Local</th><th>Visitante</th><th>Ganador</th><th>Jugado</th>";
+  thead.innerHTML = "<th>Local</th><th>Resultado</th><th>Visitante</th>";
   let url =
     "http://api.football-data.org/v2/competitions/PD/matches?dateFrom=2020-09-13&dateTo=2021-05-23";
   fetch(url, {
@@ -27,29 +26,16 @@ function getMatches(allOrSome) {
       let inputValue = teamInput.value;
       if (allOrSome == "all" || inputValue == "") {
         for (let i = 0; i < matches.length; i++) {
-          let utcDate = matches[i].utcDate;
-          let splitUtcDate = utcDate.split("T");
-          let date = splitUtcDate[0];
           let homeTeam = matches[i].homeTeam.name;
           let awayTeam = matches[i].awayTeam.name;
-          let winner = matches[i].score.winner;
-          let winnerTeam = "";
-          if (winner === "HOME_TEAM") {
-            winnerTeam = homeTeam;
-          } else if (winner === "AWAY_TEAM") {
-            winnerTeam = awayTeam;
-          } else {
-            winnerTeam = "Empate";
-          }
-          let played = "";
+          let homeTeamGoals = matches[i].score.fullTime.homeTeam;
+          let awayTeamGoals = matches[i].score.fullTime.awayTeam;
+          let score = `${homeTeamGoals} - ${awayTeamGoals}`;
           if (matches[i].status == "FINISHED") {
-            played = "Jugado";
-          } else {
-            played = "Pendiente";
+            let tr = document.createElement("tr");
+            tr.innerHTML = `<td>${homeTeam}</td><td>${score}</td><td>${awayTeam}</td>`;
+            tbody.appendChild(tr);
           }
-          let tr = document.createElement("tr");
-          tr.innerHTML = `<td>${date}</td><td>${homeTeam}</td><td>${awayTeam}</td><td>${winnerTeam}</td><td>${played}</td>`;
-          tbody.appendChild(tr);
         }
       } else if (teamInput.value != "") {
         if (radioAll.checked == true) {
@@ -66,165 +52,100 @@ function getMatches(allOrSome) {
         if (selectedMatches.length > 0) {
           if (radioAll.checked == true) {
             for (let i = 0; i < selectedMatches.length; i++) {
-              let utcDate = selectedMatches[i].utcDate;
-              let splitUtcDate = utcDate.split("T");
-              let date = splitUtcDate[0];
               let homeTeam = selectedMatches[i].homeTeam.name;
               let awayTeam = selectedMatches[i].awayTeam.name;
-              let winner = selectedMatches[i].score.winner;
-              let winnerTeam = "";
-              if (winner === "HOME_TEAM") {
-                winnerTeam = homeTeam;
-              } else if (winner === "AWAY_TEAM") {
-                winnerTeam = awayTeam;
-              } else {
-                winnerTeam = "Empate";
-              }
-              let played = "";
+              let homeTeamGoals = selectedMatches[i].score.fullTime.homeTeam;
+              let awayTeamGoals = selectedMatches[i].score.fullTime.awayTeam;
+              let score = `${homeTeamGoals} - ${awayTeamGoals}`;
               if (selectedMatches[i].status == "FINISHED") {
-                played = "Jugado";
-              } else {
-                played = "Pendiente";
+                let tr = document.createElement("tr");
+                tr.innerHTML = `<td>${homeTeam}</td><td>${score}</td><td>${awayTeam}</td>`;
+                tbody.appendChild(tr);
               }
-              let tr = document.createElement("tr");
-              tr.innerHTML = `<td>${date}</td><td>${homeTeam}</td><td>${awayTeam}</td><td>${winnerTeam}</td><td>${played}</td>`;
-              tbody.appendChild(tr);
             }
           } else if (radioWon.checked == true) {
             for (let i = 0; i < selectedMatches.length; i++) {
-              let utcDate = selectedMatches[i].utcDate;
-              let splitUtcDate = utcDate.split("T");
-              let date = splitUtcDate[0];
               let homeTeam = selectedMatches[i].homeTeam.name;
               let awayTeam = selectedMatches[i].awayTeam.name;
-              let winner = selectedMatches[i].score.winner;
-              let winnerTeam = "";
-              if (winner === "HOME_TEAM") {
-                winnerTeam = homeTeam;
-              } else if (winner === "AWAY_TEAM") {
-                winnerTeam = awayTeam;
-              } else {
-                winnerTeam = "Empate";
-              }
-              let played = "";
-              if (selectedMatches[i].status == "FINISHED") {
-                played = "Jugado";
-              } else {
-                played = "Pendiente";
-              }
-              if (winnerTeam == teamInput.value) {
+              let homeTeamGoals = selectedMatches[i].score.fullTime.homeTeam;
+              let awayTeamGoals = selectedMatches[i].score.fullTime.awayTeam;
+              let score = `${homeTeamGoals} - ${awayTeamGoals}`;
+              let winnerHomeOrAway = selectedMatches[i].score.winner;
+              if (
+                ((winnerHomeOrAway == "HOME_TEAM" && homeTeam == inputValue) ||
+                  (winnerHomeOrAway == "AWAY_TEAM" &&
+                    awayTeam == inputValue)) &&
+                selectedMatches[i].status == "FINISHED"
+              ) {
                 let tr = document.createElement("tr");
-                tr.innerHTML = `<td>${date}</td><td>${homeTeam}</td><td>${awayTeam}</td><td>${winnerTeam}</td><td>${played}</td>`;
+                tr.innerHTML = `<td>${homeTeam}</td><td>${score}</td><td>${awayTeam}</td>`;
                 tbody.appendChild(tr);
               }
             }
           } else if (radioLost.checked == true) {
             for (let i = 0; i < selectedMatches.length; i++) {
-              let utcDate = selectedMatches[i].utcDate;
-              let splitUtcDate = utcDate.split("T");
-              let date = splitUtcDate[0];
               let homeTeam = selectedMatches[i].homeTeam.name;
               let awayTeam = selectedMatches[i].awayTeam.name;
-              let winner = selectedMatches[i].score.winner;
-              let winnerTeam = "";
-              if (winner === "HOME_TEAM") {
-                winnerTeam = homeTeam;
-              } else if (winner === "AWAY_TEAM") {
-                winnerTeam = awayTeam;
-              } else {
-                winnerTeam = "Empate";
-              }
-              let played = "";
-              if (selectedMatches[i].status == "FINISHED") {
-                played = "Jugado";
-              } else {
-                played = "Pendiente";
-              }
-              if (winnerTeam != teamInput.value && winnerTeam != "Empate") {
+              let homeTeamGoals = selectedMatches[i].score.fullTime.homeTeam;
+              let awayTeamGoals = selectedMatches[i].score.fullTime.awayTeam;
+              let score = `${homeTeamGoals} - ${awayTeamGoals}`;
+              let winnerHomeOrAway = selectedMatches[i].score.winner;
+              if (
+                ((winnerHomeOrAway == "HOME_TEAM" && homeTeam != inputValue) ||
+                  (winnerHomeOrAway == "AWAY_TEAM" &&
+                    awayTeam != inputValue)) &&
+                selectedMatches[i].status == "FINISHED"
+              ) {
                 let tr = document.createElement("tr");
-                tr.innerHTML = `<td>${date}</td><td>${homeTeam}</td><td>${awayTeam}</td><td>${winnerTeam}</td><td>${played}</td>`;
+                tr.innerHTML = `<td>${homeTeam}</td><td>${score}</td><td>${awayTeam}</td>`;
                 tbody.appendChild(tr);
               }
             }
           } else if (radioDraw.checked == true) {
             for (let i = 0; i < selectedMatches.length; i++) {
-              let utcDate = selectedMatches[i].utcDate;
-              let splitUtcDate = utcDate.split("T");
-              let date = splitUtcDate[0];
               let homeTeam = selectedMatches[i].homeTeam.name;
               let awayTeam = selectedMatches[i].awayTeam.name;
-              let winner = selectedMatches[i].score.winner;
-              let winnerTeam = "";
-              if (winner === "HOME_TEAM") {
-                winnerTeam = homeTeam;
-              } else if (winner === "AWAY_TEAM") {
-                winnerTeam = awayTeam;
-              } else {
-                winnerTeam = "Empate";
-              }
-              let played = "Jugado";
+              let homeTeamGoals = selectedMatches[i].score.fullTime.homeTeam;
+              let awayTeamGoals = selectedMatches[i].score.fullTime.awayTeam;
+              let score = `${homeTeamGoals} - ${awayTeamGoals}`;
+              let winnerHomeOrAway = selectedMatches[i].score.winner;
               if (
-                winnerTeam == "Empate" &&
+                winnerHomeOrAway == "DRAW" &&
                 selectedMatches[i].status == "FINISHED"
               ) {
                 let tr = document.createElement("tr");
-                tr.innerHTML = `<td>${date}</td><td>${homeTeam}</td><td>${awayTeam}</td><td>${winnerTeam}</td><td>${played}</td>`;
+                tr.innerHTML = `<td>${homeTeam}</td><td>${score}</td><td${awayTeam}</td>`;
                 tbody.appendChild(tr);
               }
             }
           } else if (radioNext.checked == true) {
             for (let i = 0; i < selectedMatches.length; i++) {
-              let utcDate = selectedMatches[i].utcDate;
-              let splitUtcDate = utcDate.split("T");
-              let date = splitUtcDate[0];
               let homeTeam = selectedMatches[i].homeTeam.name;
               let awayTeam = selectedMatches[i].awayTeam.name;
-              let winner = selectedMatches[i].score.winner;
-              let winnerTeam = "";
-              if (winner === "HOME_TEAM") {
-                winnerTeam = homeTeam;
-              } else if (winner === "AWAY_TEAM") {
-                winnerTeam = awayTeam;
-              } else {
-                winnerTeam = "Empate";
-              }
-              let played = "Pendiente";
-              if (selectedMatches[i].status != "FINISHED") {
+              if (selectedMatches[i].status !== "FINISHED") {
                 let tr = document.createElement("tr");
-                tr.innerHTML = `<td>${date}</td><td>${homeTeam}</td><td>${awayTeam}</td><td>${winnerTeam}</td><td>${played}</td>`;
+                tr.innerHTML = `<td${homeTeam}</td><td>PENDIENTE</td><td>${awayTeam}</td>`;
                 tbody.appendChild(tr);
               }
             }
           } else {
-            for (let i = 0; i < selectedMatches.length; i++) {
-              let utcDate = selectedMatches[i].utcDate;
-              let splitUtcDate = utcDate.split("T");
-              let date = splitUtcDate[0];
-              let homeTeam = selectedMatches[i].homeTeam.name;
-              let awayTeam = selectedMatches[i].awayTeam.name;
-              let winner = selectedMatches[i].score.winner;
-              let winnerTeam = "";
-              if (winner === "HOME_TEAM") {
-                winnerTeam = homeTeam;
-              } else if (winner === "AWAY_TEAM") {
-                winnerTeam = awayTeam;
-              } else {
-                winnerTeam = "Empate";
+            for (let i = 0; i < matches.length; i++) {
+              let homeTeam = matches[i].homeTeam.name;
+              let awayTeam = matches[i].awayTeam.name;
+              let homeTeamGoals = matches[i].score.fullTime.homeTeam;
+              let awayTeamGoals = matches[i].score.fullTime.awayTeam;
+              let score = `${homeTeamGoals} - ${awayTeamGoals}`;
+              if (matches[i].status == "FINISHED") {
+                let tr = document.createElement("tr");
+                tr.innerHTML = `<td>${homeTeam}</td><td>${score}</td><td>${awayTeam}</td>`;
+                tbody.appendChild(tr);
               }
-              let played = "";
-              if (selectedMatches[i].status == "FINISHED") {
-                played = "Jugado";
-              } else {
-                played = "Pendiente";
-              }
-              let tr = document.createElement("tr");
-              tr.innerHTML = `<td>${date}</td><td>${homeTeam}</td><td>${awayTeam}</td><td>${winnerTeam}</td><td>${played}</td>`;
-              tbody.appendChild(tr);
             }
           }
         } else {
           tbody.innerHTML = "";
           thead.innerHTML = "";
+          teamInput.value = "";
           queryError.innerText = "Ese equipo no existe.";
         }
       }

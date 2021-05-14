@@ -11,6 +11,7 @@
       integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
       crossorigin="anonymous"
     />
+    <link href="./styles.css/matches.css" rel="stylesheet" />
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-success">
@@ -33,18 +34,19 @@
         >
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link active text-white" aria-current="page" href="./index.html"
+              <a
+                class="nav-link active text-white"
+                aria-current="page"
+                href="./index.html"
                 >Inicio</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link active text-white" aria-current="page" href="./ranking.html"
+              <a
+                class="nav-link active text-white"
+                aria-current="page"
+                href="./ranking.html"
                 >Clasificación</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active text-white" aria-current="page" href="./teams.html"
-                >Equipos</a
               >
             </li>
             <li class="nav-item">
@@ -55,50 +57,74 @@
                 >Partidos</a
               >
             </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active text-white"
+                aria-current="page"
+                href="./stats.html"
+                >Estadísticas</a
+              >
+            </li>
           </ul>
         </div>
       </div>
     </nav>
-    <button onclick="getMatches('all')">Todos los partidos</button>
-    <label for="name">Equipo:</label>
-    <input type="text" id="teamName" />
-    <label>
-      <input type="radio" name="matchesSelection" value="all" id="radio-all" />
-      Todos
-    </label>
-    <label>
-      <input type="radio" name="matchesSelection" value="won" id="radio-won" />
-      Ganados
-    </label>
-    <label>
-      <input
-        type="radio"
-        name="matchesSelection"
-        value="lost"
-        id="radio-lost"
-      />
-      Perdidos
-    </label>
-    <label>
-      <input
-        type="radio"
-        name="matchesSelection"
-        value="draw"
-        id="radio-draw"
-      />
-      Empatados
-    </label>
-    <label>
-      <input
-        type="radio"
-        name="matchesSelection"
-        value="next"
-        id="radio-next"
-      />
-      Próximos
-    </label>
-    <button onclick="getMatches('some')">Buscar</button>
-    <div class="table-container">
+    <div class="top-container">
+      <button onclick="getMatches('all')">Todos los partidos</button>
+      <div class="form-container">
+        <label for="name">Equipo:</label>
+        <input type="text" id="teamName" />
+        <label class="margin-left-1">
+          <input
+            type="radio"
+            name="matchesSelection"
+            value="all"
+            id="radio-all"
+          />
+          Todos
+        </label>
+        <label class="margin-left-1">
+          <input
+            type="radio"
+            name="matchesSelection"
+            value="won"
+            id="radio-won"
+          />
+          Ganados
+        </label>
+        <label class="margin-left-1">
+          <input
+            type="radio"
+            name="matchesSelection"
+            value="lost"
+            id="radio-lost"
+          />
+          Perdidos
+        </label>
+        <label class="margin-left-1">
+          <input
+            type="radio"
+            name="matchesSelection"
+            value="draw"
+            id="radio-draw"
+          />
+          Empatados
+        </label>
+        <label class="margin-left-1">
+          <input
+            type="radio"
+            name="matchesSelection"
+            value="next"
+            id="radio-next"
+          />
+          Próximos
+        </label>
+        <button onclick="getMatches('some')" class="margin-left-1">
+          Buscar
+        </button>
+      </div>
+    </div>
+    <div class="table-container padding-right-left">
       <table class="table">
         <thead id="matches-thead"></thead>
         <tbody id="matches-tbody"></tbody>

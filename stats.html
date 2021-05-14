@@ -11,6 +11,7 @@
       integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
       crossorigin="anonymous"
     />
+    <link href="./styles.css/stats.css" rel="stylesheet" />
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-success">
@@ -33,18 +34,19 @@
         >
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link active text-white" aria-current="page" href="./index.html"
+              <a
+                class="nav-link active text-white"
+                aria-current="page"
+                href="./index.html"
                 >Inicio</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link active text-white" aria-current="page" href="./ranking.html"
+              <a
+                class="nav-link active text-white"
+                aria-current="page"
+                href="./ranking.html"
                 >Clasificación</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active text-white" aria-current="page" href="./teams.html"
-                >Equipos</a
               >
             </li>
             <li class="nav-item">
@@ -55,28 +57,37 @@
                 >Partidos</a
               >
             </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active text-white"
+                aria-current="page"
+                href="./stats.html"
+                >Estadísticas</a
+              >
+            </li>
           </ul>
         </div>
       </div>
     </nav>
-    <button onclick="getInfo('all')">Ver todos</button>
-    <button onclick="getInfo('goals')">
-      Equipos con más goles por partido
-    </button>
-    <button onclick="getInfo('defense')">
-      Equipos con memos goles en contra como visitante
-    </button>
-    <div class="table-container">
-      <table id="teams-table" class="table">
-        <thead id="teams-thead"></thead>
-        <tbody id="teams-tbody"></tbody>
-      </table>
+    <div class="stats-container">
+      <div class="table-container">
+        <table id="teams-table-goals" class="table">
+          <thead id="teams-thead-goals"></thead>
+          <tbody id="teams-tbody-goals"></tbody>
+        </table>
+      </div>
+      <div class="table-container">
+        <table id="teams-table-defense" class="table">
+          <thead id="teams-thead-defense"></thead>
+          <tbody id="teams-tbody-defense"></tbody>
+        </table>
+      </div>
     </div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
       crossorigin="anonymous"
     ></script>
-    <script src="./scripts/teams.js"></script>
+    <script src="./scripts/stats.js"></script>
   </body>
 </html>
