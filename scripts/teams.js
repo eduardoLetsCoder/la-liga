@@ -1,4 +1,3 @@
-let tableCaption = document.getElementById("teams-table-caption");
 let thead = document.getElementById("teams-thead");
 let tbody = document.getElementById("teams-tbody");
 
@@ -32,7 +31,6 @@ function getInfo(allGoalsOrDefense) {
             statistics.push(teamStats);
           }
           if (allGoalsOrDefense == "all") {
-            tableCaption.innerText = "Goles de los equipos de La Liga";
             thead.innerHTML =
               "<th>Nombre</th><th>A favor</th><th>En contra</th><th>Diferencia</th>";
             for (let i = 0; i < teams.length; i++) {
@@ -41,8 +39,6 @@ function getInfo(allGoalsOrDefense) {
               tbody.appendChild(tr);
             }
           } else if (allGoalsOrDefense == "goals") {
-            tableCaption.innerText =
-              "Equipos con mayor media de goles por partido";
             let sortedStatistics = [];
             thead.innerHTML = "<th>Nombre</th><th>Media de goles marcados</th>";
             for (let i = 0; i < teams.length; i++) {
@@ -66,8 +62,6 @@ function getInfo(allGoalsOrDefense) {
               tbody.appendChild(tr);
             }
           } else if (allGoalsOrDefense == "defense") {
-            tableCaption.innerText =
-              "Equipos com menos goles encajados como visitante";
             thead.innerHTML =
               "<th>Nombre</th><th>Media de goles encajados</th>";
             let sortedStatistics;

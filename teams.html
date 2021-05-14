@@ -13,33 +13,47 @@
     />
   </head>
   <body>
-    <nav class="navbar navbar-expand-md navbar-light bg-success">
+    <nav class="navbar navbar-expand-lg navbar-light bg-success">
       <div class="container">
-        <h1>La Liga</h1>
+        <h1 class="text-white">La Liga</h1>
         <button
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#my-navbar"
-          aria-controls="my-navbar"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="my-navbar">
+        <div
+          class="collapse navbar-collapse ms-auto"
+          id="navbarSupportedContent"
+        >
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a href="./index.html" class="nav-link">Inicio</a>
+              <a class="nav-link active text-white" aria-current="page" href="./index.html"
+                >Inicio</a
+              >
             </li>
             <li class="nav-item">
-              <a href="./matches.html" class="nav-link">Partidos</a>
+              <a class="nav-link active text-white" aria-current="page" href="./ranking.html"
+                >Clasificación</a
+              >
             </li>
             <li class="nav-item">
-              <a href="./ranking.html" class="nav-link">Clasificación</a>
+              <a class="nav-link active text-white" aria-current="page" href="./teams.html"
+                >Equipos</a
+              >
             </li>
             <li class="nav-item">
-              <a href="./teams.html" class="nav-link">Equipos</a>
+              <a
+                class="nav-link active text-white"
+                aria-current="page"
+                href="./matches.html"
+                >Partidos</a
+              >
             </li>
           </ul>
         </div>
@@ -53,8 +67,7 @@
       Equipos con memos goles en contra como visitante
     </button>
     <div class="table-container">
-      <table id="teams-table">
-        <caption id="teams-table-caption"></caption>
+      <table id="teams-table" class="table">
         <thead id="teams-thead"></thead>
         <tbody id="teams-tbody"></tbody>
       </table>

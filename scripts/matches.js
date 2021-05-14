@@ -1,4 +1,3 @@
-let tableCaption = document.getElementById("matches-table-caption");
 let thead = document.getElementById("matches-thead");
 let tbody = document.getElementById("matches-tbody");
 let teamInput = document.getElementById("teamName");
@@ -12,7 +11,6 @@ let queryError = document.getElementById("query-error");
 function getMatches(allOrSome) {
   queryError.innerText = "";
   tbody.innerHTML = "";
-  tableCaption.innerText = "PARTIDOS";
   thead.innerHTML =
     "<th>Fecha</th><th>Local</th><th>Visitante</th><th>Ganador</th><th>Jugado</th>";
   let url =
@@ -226,7 +224,6 @@ function getMatches(allOrSome) {
           }
         } else {
           tbody.innerHTML = "";
-          tableCaption.innerHTML = "";
           thead.innerHTML = "";
           queryError.innerText = "Ese equipo no existe.";
         }

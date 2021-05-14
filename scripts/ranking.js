@@ -1,9 +1,8 @@
-let tableCaption = document.getElementById("ranking-table-caption");
 let thead = document.getElementById("ranking-thead");
 let tbody = document.getElementById("ranking-tbody");
 
 function getRanking() {
-  thead.innerHTML = "<th>Posición</th><th>Equipo</th><th>Puntos</th><th>Partidos jugados</th>";
+  thead.innerHTML = "<th>Posición</th><th>Equipo</th><th>PJ</th><th>PG</th><th>Pts</th>";
   let url = "http://api.football-data.org/v2/competitions/2014/standings"
   fetch(url, {
     method: "GET",
@@ -14,18 +13,14 @@ function getRanking() {
     .then((response) => response.json())
     .then((data) => {
       let ranking = data.standings[0].table;
-      let lastUpdated = data.competition.lastUpdated;
-      let splitLastUpdated = lastUpdated.split("T");
-      let lastUpdatedDate = splitLastUpdated[0];
-      tableCaption.innerText = `CLASIFICACIÓN (${lastUpdatedDate})`;
-      console.log(lastUpdatedDate);
       for (let i = 0; i < ranking.length; i++) {
         let position = ranking[i].position;
         let team = ranking[i].team.name;
         let points = ranking[i].points;
         let playedGames = ranking[i].playedGames;
+        let wonGames = ranking[i].won;
         let tr = document.createElement('tr');
-        tr.innerHTML = `<td>${position}</td><td>${team}</td><td>${points}</td><td>${playedGames}</td>`;
+        tr.innerHTML = `<td>${position}</td><td>${team}</td><td>${playedGames}</td><td>${wonGames}</td><td>${points}</td>`;
         tbody.appendChild(tr);
       }
     });
