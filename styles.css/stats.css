@@ -3,10 +3,21 @@
   height: 100vh;
   display: flex;
   justify-content: space-around;
-  padding-top: 7rem;
 }
 
 .flex-center {
   display: flex;
   justify-content: center;
+}
+
+.messages-container {
+  margin-top: 7rem;
+}
+
+.loading {
+  text-align: center;
+}
+
+.error {
+  text-align: center;
 }

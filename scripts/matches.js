@@ -7,13 +7,15 @@ let radioLost = document.getElementById("radio-lost");
 let radioDraw = document.getElementById("radio-draw");
 let radioNext = document.getElementById("radio-next");
 let queryError = document.getElementById("query-error");
+let error = document.getElementById("error");
+let loading = document.getElementById("loading");
 
 function getMatches(allOrSome) {
-  queryError.innerText = "";
+  loading.innerHTML = "<p>Cargando...</p>";
+  queryError.innerHTML = "";
   tbody.innerHTML = "";
   thead.innerHTML = "<th>Local</th><th>Resultado</th><th>Visitante</th>";
-  let url =
-    "http://api.football-data.org/v2/competitions/PD/matches?dateFrom=2020-09-13&dateTo=2021-05-23";
+  let url = "https://api.football-data.org/v2/competitions/2014/matches";
   fetch(url, {
     method: "GET",
     headers: {
@@ -22,6 +24,7 @@ function getMatches(allOrSome) {
   })
     .then((response) => response.json())
     .then((data) => {
+      loading.innerHTML = "";
       let matches = data.matches;
       let inputValue = teamInput.value;
       if (allOrSome == "all" || inputValue == "") {
@@ -114,15 +117,24 @@ function getMatches(allOrSome) {
                 selectedMatches[i].status == "FINISHED"
               ) {
                 let tr = document.createElement("tr");
-                tr.innerHTML = `<td>${homeTeam}</td><td>${score}</td><td${awayTeam}</td>`;
+                tr.innerHTML = `<td>${homeTeam}</td><td>${score}</td><td>${awayTeam}</td>`;
                 tbody.appendChild(tr);
               }
             }
           } else if (radioNext.checked == true) {
+            let notFinishedMatches = [];
             for (let i = 0; i < selectedMatches.length; i++) {
-              let homeTeam = selectedMatches[i].homeTeam.name;
-              let awayTeam = selectedMatches[i].awayTeam.name;
               if (selectedMatches[i].status !== "FINISHED") {
+                notFinishedMatches.push(selectedMatches[i]);
+              }
+            }
+            if (notFinishedMatches.length == 0) {
+              queryError.innerHTML =
+                "<p>A este equipo no le quedan partidos por jugar.</p>";
+            } else {
+              for (let i = 0; let < notFinishedMatches.length; i++) {
+                let homeTeam = notFinishedMatches[i].homeTeam.name;
+                let awayTeam = notFinishedMatches[i].awayTeam.name;
                 let tr = document.createElement("tr");
                 tr.innerHTML = `<td${homeTeam}</td><td>PENDIENTE</td><td>${awayTeam}</td>`;
                 tbody.appendChild(tr);
@@ -146,9 +158,15 @@ function getMatches(allOrSome) {
           tbody.innerHTML = "";
           thead.innerHTML = "";
           teamInput.value = "";
-          queryError.innerText = "Ese equipo no existe.";
+          queryError.innerHTML = "<p>Ese equipo no existe.</p>";
         }
       }
+    })
+    .catch((err) => {
+      let paragraph = document.createElement("p");
+      loading.innerHTML = "";
+      paragraph.innerHTML = `Ha ocurrido un error. Vuelva a intentarlo más tarde.`;
+      error.appendChild(paragraph);
     });
 }
 

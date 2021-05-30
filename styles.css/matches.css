@@ -19,3 +19,11 @@
   font-size: 1.2rem;
   color: red;
 }
+
+.loading {
+  text-align: center;
+}
+
+.error {
+  text-align: center;
+}

@@ -2,8 +2,11 @@ let theadGoals = document.getElementById("teams-thead-goals");
 let tbodyGoals = document.getElementById("teams-tbody-goals");
 let theadDefense = document.getElementById("teams-thead-defense");
 let tbodyDefense = document.getElementById("teams-tbody-defense");
+let error = document.getElementById("error");
+let loading = document.getElementById("loading");
 
 function getInfo() {
+  loading.innerHTML = "<p>Cargando...</p>";
   tbodyGoals.innerHTML = "";
   tbodyDefense.innerHTML = "";
   let url = "http://api.football-data.org/v2/competitions/2014/standings";
@@ -15,9 +18,10 @@ function getInfo() {
   })
     .then((response) => response.json())
     .then((info) => {
+      loading.innerHTML = "";
       let teams = info.standings[0].table;
       let url =
-        "http://api.football-data.org/v2/competitions/PD/matches?dateFrom=2020-09-13&dateTo=2021-05-23";
+        "https://api.football-data.org/v2/competitions/2014/matches";
       fetch(url, {
         method: "GET",
         headers: {
@@ -91,6 +95,13 @@ function getInfo() {
             tbodyDefense.appendChild(tr);
           }
         });
+    })
+    .catch((err) => {
+      console.log(err);
+      let paragraph = document.createElement("p");
+      loading.innerHTML = "";
+      error.innerHTML = "<p>Ha ocurrido un error. Vuelva a intentarlo más tarde.</p>";
+      error.appendChild(paragraph);
     });
 }
 
