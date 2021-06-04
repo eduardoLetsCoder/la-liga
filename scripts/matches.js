@@ -10,6 +10,61 @@ let queryError = document.getElementById("query-error");
 let error = document.getElementById("error");
 let loading = document.getElementById("loading");
 
+let radioAllChecked = false;
+radioAll.addEventListener("click", function () {
+  if (radioAllChecked == true) {
+    radioAll.checked = false;
+    radioAllChecked = false;
+  } else if (radioAllChecked == false) {
+    radioAll.checked = true;
+    radioAllChecked = true;
+  }
+});
+
+let radioWonChecked = false;
+radioWon.addEventListener("click", function () {
+  if (radioWonChecked == true) {
+    radioWon.checked = false;
+    radioWonChecked = false;
+  } else if (radioWonChecked == false) {
+    radioWon.checked = true;
+    radioWonChecked = true;
+  }
+});
+
+let radioLostChecked = false;
+radioLost.addEventListener("click", function () {
+  if (radioLostChecked == true) {
+    radioLost.checked = false;
+    radioLostChecked = false;
+  } else if (radioLostChecked == false) {
+    radioLost.checked = true;
+    radioLostChecked = true;
+  }
+});
+
+let radioDrawChecked = false;
+radioDraw.addEventListener("click", function () {
+  if (radioDrawChecked == true) {
+    radioDraw.checked = false;
+    radioDrawChecked = false;
+  } else if (radioDrawChecked == false) {
+    radioDraw.checked = true;
+    radioDrawChecked = true;
+  }
+});
+
+let radioNextChecked = false;
+radioNext.addEventListener("click", function () {
+  if (radioNextChecked == true) {
+    radioNext.checked = false;
+    radioNextChecked = false;
+  } else if (radioNextChecked == false) {
+    radioNext.checked = true;
+    radioNextChecked = true;
+  }
+});
+
 function getMatches(allOrSome) {
   loading.innerHTML = "<p>Cargando...</p>";
   queryError.innerHTML = "";
