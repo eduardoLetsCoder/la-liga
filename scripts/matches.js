@@ -1,228 +1,181 @@
 let thead = document.getElementById("matches-thead");
 let tbody = document.getElementById("matches-tbody");
-let teamInput = document.getElementById("teamName");
-let radioAll = document.getElementById("radio-all");
-let radioWon = document.getElementById("radio-won");
-let radioLost = document.getElementById("radio-lost");
-let radioDraw = document.getElementById("radio-draw");
-let radioNext = document.getElementById("radio-next");
-let queryError = document.getElementById("query-error");
 let error = document.getElementById("error");
 let loading = document.getElementById("loading");
+let radios = document.getElementsByClassName("radio-input");
+let teamInput = document.getElementById("teamName");
+let searchButton = document.getElementById("search-matches");
+let allButton = document.getElementById("all-button");
 
-let radioAllChecked = false;
-radioAll.addEventListener("click", function () {
-  if (radioAllChecked == true) {
-    radioAll.checked = false;
-    radioAllChecked = false;
-  } else if (radioAllChecked == false) {
-    radioAll.checked = true;
-    radioAllChecked = true;
+let init = async () => {
+  let apiMatches = await getMatches();
+  console.log(apiMatches);
+  allButton.addEventListener("click", () => {
+    cleanTable();
+    drawMatches(apiMatches);
+  });
+  searchButton.addEventListener("click", () => {
+    filter(apiMatches);
+  });
+  if (apiMatches) {
+    drawMatches(apiMatches);
+  } else {
+    drawError("<p>No se han encontrado partidos.</p>");
   }
-});
+};
 
-let radioWonChecked = false;
-radioWon.addEventListener("click", function () {
-  if (radioWonChecked == true) {
-    radioWon.checked = false;
-    radioWonChecked = false;
-  } else if (radioWonChecked == false) {
-    radioWon.checked = true;
-    radioWonChecked = true;
-  }
-});
-
-let radioLostChecked = false;
-radioLost.addEventListener("click", function () {
-  if (radioLostChecked == true) {
-    radioLost.checked = false;
-    radioLostChecked = false;
-  } else if (radioLostChecked == false) {
-    radioLost.checked = true;
-    radioLostChecked = true;
-  }
-});
-
-let radioDrawChecked = false;
-radioDraw.addEventListener("click", function () {
-  if (radioDrawChecked == true) {
-    radioDraw.checked = false;
-    radioDrawChecked = false;
-  } else if (radioDrawChecked == false) {
-    radioDraw.checked = true;
-    radioDrawChecked = true;
-  }
-});
-
-let radioNextChecked = false;
-radioNext.addEventListener("click", function () {
-  if (radioNextChecked == true) {
-    radioNext.checked = false;
-    radioNextChecked = false;
-  } else if (radioNextChecked == false) {
-    radioNext.checked = true;
-    radioNextChecked = true;
-  }
-});
-
-function getMatches(allOrSome) {
-  loading.innerHTML = "<p>Cargando...</p>";
-  queryError.innerHTML = "";
-  tbody.innerHTML = "";
-  thead.innerHTML = "<th>Local</th><th>Resultado</th><th>Visitante</th>";
-  let url = "https://api.football-data.org/v2/competitions/2014/matches";
-  fetch(url, {
+const getMatches = () => {
+  cleanError();
+  drawLoading();
+  cleanTable();
+  drawThead();
+  let url =
+    "https://api.football-data.org/v2/competitions/2014/matches?season=2020";
+  let info = fetch(url, {
     method: "GET",
     headers: {
-      "X-Auth-Token": "875bb0b93478426fb1050e158da976cf",
+      "X-Auth-Token": "928dd4e062654c76833a1d9ebc7eb435",
     },
   })
     .then((response) => response.json())
     .then((data) => {
-      loading.innerHTML = "";
-      let matches = data.matches;
-      let inputValue = teamInput.value;
-      if (allOrSome == "all" || inputValue == "") {
-        for (let i = 0; i < matches.length; i++) {
-          let homeTeam = matches[i].homeTeam.name;
-          let awayTeam = matches[i].awayTeam.name;
-          let homeTeamGoals = matches[i].score.fullTime.homeTeam;
-          let awayTeamGoals = matches[i].score.fullTime.awayTeam;
-          let score = `${homeTeamGoals} - ${awayTeamGoals}`;
-          if (matches[i].status == "FINISHED") {
-            let tr = document.createElement("tr");
-            tr.innerHTML = `<td>${homeTeam}</td><td>${score}</td><td>${awayTeam}</td>`;
-            tbody.appendChild(tr);
-          }
-        }
-      } else if (teamInput.value != "") {
-        if (radioAll.checked == true) {
-        }
-        let selectedMatches = [];
-        for (let i = 0; i < matches.length; i++) {
-          if (
-            inputValue == matches[i].homeTeam.name ||
-            inputValue == matches[i].awayTeam.name
-          ) {
-            selectedMatches.push(matches[i]);
-          }
-        }
-        if (selectedMatches.length > 0) {
-          if (radioAll.checked == true) {
-            for (let i = 0; i < selectedMatches.length; i++) {
-              let homeTeam = selectedMatches[i].homeTeam.name;
-              let awayTeam = selectedMatches[i].awayTeam.name;
-              let homeTeamGoals = selectedMatches[i].score.fullTime.homeTeam;
-              let awayTeamGoals = selectedMatches[i].score.fullTime.awayTeam;
-              let score = `${homeTeamGoals} - ${awayTeamGoals}`;
-              if (selectedMatches[i].status == "FINISHED") {
-                let tr = document.createElement("tr");
-                tr.innerHTML = `<td>${homeTeam}</td><td>${score}</td><td>${awayTeam}</td>`;
-                tbody.appendChild(tr);
-              }
-            }
-          } else if (radioWon.checked == true) {
-            for (let i = 0; i < selectedMatches.length; i++) {
-              let homeTeam = selectedMatches[i].homeTeam.name;
-              let awayTeam = selectedMatches[i].awayTeam.name;
-              let homeTeamGoals = selectedMatches[i].score.fullTime.homeTeam;
-              let awayTeamGoals = selectedMatches[i].score.fullTime.awayTeam;
-              let score = `${homeTeamGoals} - ${awayTeamGoals}`;
-              let winnerHomeOrAway = selectedMatches[i].score.winner;
-              if (
-                ((winnerHomeOrAway == "HOME_TEAM" && homeTeam == inputValue) ||
-                  (winnerHomeOrAway == "AWAY_TEAM" &&
-                    awayTeam == inputValue)) &&
-                selectedMatches[i].status == "FINISHED"
-              ) {
-                let tr = document.createElement("tr");
-                tr.innerHTML = `<td>${homeTeam}</td><td>${score}</td><td>${awayTeam}</td>`;
-                tbody.appendChild(tr);
-              }
-            }
-          } else if (radioLost.checked == true) {
-            for (let i = 0; i < selectedMatches.length; i++) {
-              let homeTeam = selectedMatches[i].homeTeam.name;
-              let awayTeam = selectedMatches[i].awayTeam.name;
-              let homeTeamGoals = selectedMatches[i].score.fullTime.homeTeam;
-              let awayTeamGoals = selectedMatches[i].score.fullTime.awayTeam;
-              let score = `${homeTeamGoals} - ${awayTeamGoals}`;
-              let winnerHomeOrAway = selectedMatches[i].score.winner;
-              if (
-                ((winnerHomeOrAway == "HOME_TEAM" && homeTeam != inputValue) ||
-                  (winnerHomeOrAway == "AWAY_TEAM" &&
-                    awayTeam != inputValue)) &&
-                selectedMatches[i].status == "FINISHED"
-              ) {
-                let tr = document.createElement("tr");
-                tr.innerHTML = `<td>${homeTeam}</td><td>${score}</td><td>${awayTeam}</td>`;
-                tbody.appendChild(tr);
-              }
-            }
-          } else if (radioDraw.checked == true) {
-            for (let i = 0; i < selectedMatches.length; i++) {
-              let homeTeam = selectedMatches[i].homeTeam.name;
-              let awayTeam = selectedMatches[i].awayTeam.name;
-              let homeTeamGoals = selectedMatches[i].score.fullTime.homeTeam;
-              let awayTeamGoals = selectedMatches[i].score.fullTime.awayTeam;
-              let score = `${homeTeamGoals} - ${awayTeamGoals}`;
-              let winnerHomeOrAway = selectedMatches[i].score.winner;
-              if (
-                winnerHomeOrAway == "DRAW" &&
-                selectedMatches[i].status == "FINISHED"
-              ) {
-                let tr = document.createElement("tr");
-                tr.innerHTML = `<td>${homeTeam}</td><td>${score}</td><td>${awayTeam}</td>`;
-                tbody.appendChild(tr);
-              }
-            }
-          } else if (radioNext.checked == true) {
-            let notFinishedMatches = [];
-            for (let i = 0; i < selectedMatches.length; i++) {
-              if (selectedMatches[i].status !== "FINISHED") {
-                notFinishedMatches.push(selectedMatches[i]);
-              }
-            }
-            if (notFinishedMatches.length == 0) {
-              queryError.innerHTML =
-                "<p>A este equipo no le quedan partidos por jugar.</p>";
-            } else {
-              for (let i = 0; let < notFinishedMatches.length; i++) {
-                let homeTeam = notFinishedMatches[i].homeTeam.name;
-                let awayTeam = notFinishedMatches[i].awayTeam.name;
-                let tr = document.createElement("tr");
-                tr.innerHTML = `<td${homeTeam}</td><td>PENDIENTE</td><td>${awayTeam}</td>`;
-                tbody.appendChild(tr);
-              }
-            }
-          } else {
-            for (let i = 0; i < matches.length; i++) {
-              let homeTeam = matches[i].homeTeam.name;
-              let awayTeam = matches[i].awayTeam.name;
-              let homeTeamGoals = matches[i].score.fullTime.homeTeam;
-              let awayTeamGoals = matches[i].score.fullTime.awayTeam;
-              let score = `${homeTeamGoals} - ${awayTeamGoals}`;
-              if (matches[i].status == "FINISHED") {
-                let tr = document.createElement("tr");
-                tr.innerHTML = `<td>${homeTeam}</td><td>${score}</td><td>${awayTeam}</td>`;
-                tbody.appendChild(tr);
-              }
-            }
-          }
-        } else {
-          tbody.innerHTML = "";
-          thead.innerHTML = "";
-          teamInput.value = "";
-          queryError.innerHTML = "<p>Ese equipo no existe.</p>";
-        }
-      }
+      cleanLoading();
+      return data.matches;
     })
-    .catch((err) => {
-      let paragraph = document.createElement("p");
-      loading.innerHTML = "";
-      paragraph.innerHTML = `Ha ocurrido un error. Vuelva a intentarlo más tarde.`;
-      error.appendChild(paragraph);
+    .catch((error) => {
+      drawError(`<p>Ha ocurrido el siguiente error: ${error}</p>`);
+      cleanLoading();
     });
-}
+  return info;
+};
 
-getMatches("all");
+const drawMatches = (matches) => {
+  cleanInput();
+  matches.forEach((match) => {
+    let score = "";
+    if (match.status == "FINISHED") {
+      score = `${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}`;
+    } else {
+      score = "PENDIENTE";
+    }
+    let tr = document.createElement("tr");
+    tr.innerHTML = `<td>${match.homeTeam.name}</td><td><img class="logo" src="https://crests.football-data.org/${match.homeTeam.id}.svg" />${score}<img class="logo" src="https://crests.football-data.org/${match.awayTeam.id}.svg"/></td><td>${match.awayTeam.name}</td>`;
+    tbody.appendChild(tr);
+  });
+};
+
+const drawThead = () => {
+  thead.innerHTML = "<th>Local</th><th>Resultado</th><th>Visitante</th>";
+};
+
+const drawLoading = () => {
+  loading.innerHTML = "<p>Cargando...</p>";
+};
+
+const cleanTable = () => {
+  tbody.innerHTML = "";
+};
+
+const cleanLoading = () => {
+  loading.innerHTML = "";
+};
+
+const drawError = (errorHTML) => {
+  error.innerHTML = errorHTML;
+};
+
+const cleanError = () => {
+  error.innerHTML = "";
+};
+
+const cleanInput = () => {
+  teamInput.value = "";
+};
+
+const filter = (matches) => {
+  let checkedRadio = "";
+  for (let i = 0; i < radios.length; i++) {
+    if (radios[i].checked == true) {
+      checkedRadio = radios[i].id;
+    }
+  }
+  if (teamInput.value == "" && checkedRadio == "") {
+    drawMatches(matches);
+  } else if (checkedRadio == "radio-won") {
+    if (teamInput.value == "") {
+      cleanTable();
+      drawError("<p>Pon un equipo o algo.</p>");
+    } else {
+      let selectedMatches = [];
+      matches.forEach((match) => {
+        if (
+          (match.homeTeam.name == teamInput.value &&
+            match.score.winner == "HOME_TEAM") ||
+          (match.awayTeam.name == teamInput.value &&
+            match.score.winner == "AWAY_TEAM")
+        ) {
+          selectedMatches.push(match);
+        }
+      });
+      cleanTable();
+      drawMatches(selectedMatches);
+    }
+  } else if (checkedRadio == "radio-draw") {
+    if (teamInput.value == "") {
+      cleanTable();
+      drawError("<p>Pon un equipo o algo.</p>");
+    } else {
+      let selectedMatches = [];
+      matches.forEach((match) => {
+        if (
+          (match.homeTeam.name == teamInput.value &&
+            match.score.winner == "DRAW") ||
+          (match.awayTeam.name == teamInput.value &&
+            match.score.winner == "DRAW")
+        ) {
+          selectedMatches.push(match);
+        }
+      });
+      cleanTable();
+      drawMatches(selectedMatches);
+    }
+  } else if (checkedRadio == "radio-lost") {
+    if (teamInput.value == "") {
+      cleanTable();
+      drawError("<p>Pon un equipo o algo.</p>");
+    } else {
+      let selectedMatches = [];
+      matches.forEach((match) => {
+        if (
+          (match.homeTeam.name == teamInput.value &&
+            match.score.winner == "AWAY_TEAM") ||
+          (match.awayTeam.name == teamInput.value &&
+            match.score.winner == "HOME_TEAM")
+        ) {
+          selectedMatches.push(match);
+        }
+      });
+      cleanTable();
+      drawMatches(selectedMatches);
+    }
+  } else if (checkedRadio == "radio-all" || checkedRadio == "") {
+    if (teamInput.value == "") {
+      cleanTable();
+      drawError("<p>Pon un equipo o algo.</p>");
+    } else {
+      let selectedMatches = [];
+      matches.forEach((match) => {
+        if (
+          match.homeTeam.name == teamInput.value ||
+          match.awayTeam.name == teamInput.value
+        ) {
+          selectedMatches.push(match);
+        }
+      });
+      cleanTable();
+      drawMatches(selectedMatches);
+    }
+  }
+};
+
+init();

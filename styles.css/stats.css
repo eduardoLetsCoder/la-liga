@@ -1,8 +1,11 @@
-.stats-container {
-  width: 100%;
-  height: 100vh;
+.table-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  padding-top: 7rem;
+}
+
+.little-table {
+  width: 50rem;
 }
 
 .flex-center {
@@ -20,4 +23,8 @@
 
 .error {
   text-align: center;
+}
+
+.logo {
+  width: 40px;
 }

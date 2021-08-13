@@ -70,13 +70,14 @@
       </div>
     </nav>
     <div class="top-container">
-      <button onclick="getMatches('all')">Todos los partidos</button>
+      <button id="all-button">Todos los partidos</button>
       <div class="form-container">
         <label for="name">Equipo:</label>
         <input type="text" id="teamName" />
         <label class="margin-left-1">
           <input
             type="radio"
+            class="radio-input"
             name="matchesSelection"
             value="all"
             id="radio-all"
@@ -86,6 +87,7 @@
         <label class="margin-left-1">
           <input
             type="radio"
+            class="radio-input"
             name="matchesSelection"
             value="won"
             id="radio-won"
@@ -95,6 +97,7 @@
         <label class="margin-left-1">
           <input
             type="radio"
+            class="radio-input"
             name="matchesSelection"
             value="lost"
             id="radio-lost"
@@ -104,22 +107,14 @@
         <label class="margin-left-1">
           <input
             type="radio"
+            class="radio-input"
             name="matchesSelection"
             value="draw"
             id="radio-draw"
           />
           Empatados
         </label>
-        <label class="margin-left-1">
-          <input
-            type="radio"
-            name="matchesSelection"
-            value="next"
-            id="radio-next"
-          />
-          Próximos
-        </label>
-        <button onclick="getMatches('some')" class="margin-left-1">
+        <button id="search-matches" class="margin-left-1">
           Buscar
         </button>
       </div>
@@ -130,7 +125,6 @@
         <tbody id="matches-tbody"></tbody>
       </table>
     </div>
-    <div id="query-error" class="error-container"></div>
     <div id="error" class="error"></div>
     <div id="loading" class="loading"></div>
     <script
