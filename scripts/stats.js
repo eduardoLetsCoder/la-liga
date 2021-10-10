@@ -11,7 +11,7 @@ const getMatches = () => {
   cleanTable();
   drawThead();
   let url =
-    "https://api.football-data.org/v2/competitions/2014/matches?season=2020";
+    "https://api.football-data.org/v2/competitions/2014/matches?season=2021";
   let data = fetch(url, {
     method: "GET",
     headers: {
