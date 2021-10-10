@@ -9,7 +9,6 @@ let allButton = document.getElementById("all-button");
 
 let init = async () => {
   let apiMatches = await getMatches();
-  console.log(apiMatches);
   allButton.addEventListener("click", () => {
     cleanTable();
     drawMatches(apiMatches);

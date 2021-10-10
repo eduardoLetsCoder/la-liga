@@ -118,7 +118,6 @@ const getAverage = (matches) => {
 };
 
 const drawTop = (teams) => {
-  console.log(teams);
   teams.forEach((team) => {
     let tr = document.createElement("tr");
     tr.innerHTML = `<tr><td><img class="logo" src="https://crests.football-data.org/${team.id}.svg" />${team.name}</td><td>${team.goals}</td><td>${team.matches}</td><td>${team.average}</td></tr>`;
