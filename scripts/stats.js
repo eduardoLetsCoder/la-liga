@@ -4,12 +4,6 @@ let error = document.getElementById("error");
 let loading = document.getElementById("loading");
 
 const getMatches = () => {
-  loading.innerHTML = "<p>Cargando...</p>";
-  tbody.innerHTML = "";
-  cleanError();
-  drawLoading();
-  cleanTable();
-  drawThead();
   let url =
     "https://api.football-data.org/v2/competitions/2014/matches?season=2021";
   let data = fetch(url, {
@@ -20,12 +14,12 @@ const getMatches = () => {
   })
     .then((response) => response.json())
     .then((data) => {
-      loading.innerHTML = "";
+      cleanLoading();
       return data.matches;
     })
     .catch((error) => {
-      drawError(`<p>Ha ocurrido el siguiente error: ${error}</p>`);
       cleanLoading();
+      drawError(`<p>Ha ocurrido el siguiente error: ${error}</p>`);
     });
   return data;
 };
@@ -55,6 +49,10 @@ const cleanError = () => {
 };
 
 const init = async () => {
+  cleanTable();
+  cleanError();
+  drawLoading();
+  drawThead();
   let matches = await getMatches();
   let top = getAverage(matches);
   drawTop(top);
